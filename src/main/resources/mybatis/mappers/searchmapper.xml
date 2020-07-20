@@ -19,14 +19,21 @@
 
     <select id="myKeyword" resultType="String">
         select
-            KEYWORD
+        *
         from
-            HW_SEARCH_HISTORY
+        (
+        select
+        KEYWORD
+        from HW_SEARCH_HISTORY
         WHERE
-            ROWNUM &lt;=3 and WRITER='HwanSeung'
+        WRITER='HwanSeung'
         order by
-             REG_DATE
-        DESC
+        REG_DATE
+        desc
+        )
+        WHERE
+        ROWNUM &lt;=3;
+
     </select>
 
 </mapper>

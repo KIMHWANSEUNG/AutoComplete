@@ -1,0 +1,19 @@
+package com.study.homework.Repository.VO;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.Date;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
+@Builder
+public class SearchVo {
+    private String keyword;
+    private String writer="HwanSeung";
+
+
+}

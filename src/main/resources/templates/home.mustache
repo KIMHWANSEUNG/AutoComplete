@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>자동 완성</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 이게 없으면 한글 검색 x -->
+    <meta charset="utf-8">
+    <!-- jQuery ui style sheet -->
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <!-- jQuery library -->
+    <script src="https://code.jquery.com/jquery.js"></script>
+    <!-- jQuery ui library -->
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/3.0.1/mustache.min.js"></script>
+
+
+</head>
+<body>
+<script type="text/javascript">
+
+
+
+    $(document).ready(function () {
+
+
+        $("#btn_search").click(function () {
+            var word=$("#input_search").val();
+
+            var action="insertword.ajax";
+
+            var form={
+                "word":word
+            }
+
+            $.ajax({
+                type:"POST",
+                url:action,
+                data:form,
+                success:function (data) {
+                    onreset
+                    console.log(data.length);
+                    if(data.length!=0) {
+                        $("#list").empty();
+                        $.each(data, function (index, item) {
+                            $("#list").append(
+                                    "<h4>(호텔 이름) </h4>" + item.hotelNm+
+                                    "<h4>(호텔 주소) </h4>" + item.hotelAdres
+                            )
+                        })
+                    }else if(data.length==0){
+                            $("#list").empty();
+                            $("#list").append(
+                                "<h2>!! 데이터가 없습니다 !!</h2>"
+                            )
+                    }
+
+
+
+                }
+            });
+        });
+
+        $("#input_search").autocomplete({
+            source: function(request, response){
+                let word = $("#input_search").val();
+
+                $.ajax({
+                    type:"get",
+                    url:"selectword.ajax",
+                    data: {"word" : word},
+                    success:function (data) {
+                        let list=  data.HashMapList;
+
+                        response(
+                            list
+                        );
+                    }
+                });
+            },
+        });
+
+    });
+</script>
+
+<style>
+    .div_total{
+        display: flex;
+        flex-direction: column;
+        min-height:300px;
+        width:100%;
+        align-items:center;
+        text-align: center;
+    }
+    .div_search{
+        display: flex;
+        flex-direction: row;
+    }
+    .list{
+        align-items:center;
+        text-align: center;
+    }
+</style>
+
+<div class="div_total">
+    <h2>자동 완성 기능 구현</h2>
+    <div class="div_search">
+        <input id="input_search" type="text">
+        <button id="btn_search">검색</button>
+    </div>
+</div>
+    <div id="list" class="list">
+    </div>
+<div>
+
+</div>
+
+</body>
+</html>

@@ -3,14 +3,12 @@ package com.study.homework.Controller;
 import com.study.homework.Repository.VO.BoardVo;
 import com.study.homework.Repository.VO.SearchVo;
 import com.study.homework.Service.SearchService;
-import lombok.extern.log4j.Log4j;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
@@ -45,7 +43,7 @@ public class HomeController {
             logger.info(a);
         }
         logger.info("*******************"+selectSearchlist+"*******************");
-        hashMap.put("HashMapList",selectSearchlist);
+        hashMap.put("selectSearchlist",selectSearchlist);
         hashMap.put("myKeyword",myKeyword);
         return hashMap;
     }

@@ -59,7 +59,7 @@
 
                 }
             });
-        });
+        })
 
         $("#input_search").autocomplete({
             source: function(request, response){
@@ -70,15 +70,44 @@
                     url:"selectword.ajax",
                     data: {"word" : word},
                     success:function (data) {
-                        let list=  data.HashMapList;
-
+                        let list1= data.selectSearchlist;
+                        let list2= data.myKeyword;
+                        let list3= Object.assign(list1,list2);
                         response(
-                            list
-                        );
+                                $.map(list3, function(item, index) {
+                                    return {
+                                        label: item,
+                                        value: item,
+                                        number:index
+                                    };
+                                })
+                          )
                     }
                 });
             },
-        });
+            create:function () {
+                $(this).data("ui-autocomplete")._renderItem=function (ul,item) {
+                    if(item.number<3){
+                        return $("<li>")
+                                .data("ui-autocomplete-item", item)
+                                .append("<a>" + "<strong>" + "[최근 검색]" + item.label + "</strong>" + "</a>")
+                                .appendTo(ul);
+                    }else{
+                        return $("<li>")
+                                .data("ui-autocomplete-item", item)
+                                .append("<a>" + "<strong>" +  item.label + "</strong>" + "</a>")
+                                .appendTo(ul);
+                    }
+
+                }
+
+            }
+
+
+
+        })
+
+
 
     });
 </script>

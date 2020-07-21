@@ -19,20 +19,21 @@
 
     <select id="myKeyword" resultType="String">
         select
-        *
+        KEYWORD
         from
         (
         select
-        KEYWORD
-        from HW_SEARCH_HISTORY
+             KEYWORD
+        from
+            HW_SEARCH_HISTORY
         WHERE
-        WRITER='HwanSeung'
+            WRITER='HwanSeung'
         order by
-        REG_DATE
+            REG_DATE
         desc
         )
         WHERE
-        ROWNUM &lt;=3;
+            ROWNUM &lt;=3
 
     </select>
 

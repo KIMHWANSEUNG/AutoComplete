@@ -6,6 +6,7 @@ import com.study.homework.Repository.mapper.SearchMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -16,8 +17,8 @@ public class SearchServiceimpl implements SearchService {
     public void insertSearch(SearchVo vo){
         searchmapper.insertSearch(vo);
     }
-    public List<String> selectSearch(String word){
-       return searchmapper.selectSearch(word);
+    public List<String> selectSearch(HashMap paramMap){
+       return searchmapper.selectSearch(paramMap);
     }
     public List<BoardVo> selectList(String word){
         return searchmapper.selectList(word);
@@ -25,8 +26,8 @@ public class SearchServiceimpl implements SearchService {
     public int confirmKeyword(String word){
         return searchmapper.confirmKeyword(word);
     }
-    public List<String> myKeyword(){
-        return searchmapper.myKeyword();
+    public List<String> myKeyword(String word){
+        return searchmapper.myKeyword(word);
     }
 
 }

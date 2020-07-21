@@ -6,7 +6,24 @@
     </insert>
 
     <select id="selectSearch" resultType="String">
-        select KEYWORD from HW_SEARCH_HISTORY where KEYWORD like '%' || #{keyword} ||'%'
+        select
+            KEYWORD
+        from
+            HW_SEARCH_HISTORY
+        where
+    1=1
+            <if test='minusKeyword != null'>
+                KEYWORD
+                not in
+                <foreach collection="myKeyword" item="minusKeyword" open="(" close=")" separator=",">
+                    #{minusKeyword}
+                </foreach>
+
+            </if>
+        and
+            KEYWORD
+        like
+            '%' || #{word} ||'%'
     </select>
 
     <select id="selectList" resultType="com.study.homework.Repository.VO.BoardVo">
@@ -28,6 +45,9 @@
             HW_SEARCH_HISTORY
         WHERE
             WRITER='HwanSeung'
+        and
+        KEYWORD
+        like '%'|| #{word}||'%'
         order by
             REG_DATE
         desc

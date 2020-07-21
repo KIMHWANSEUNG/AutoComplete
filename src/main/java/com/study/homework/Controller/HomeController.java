@@ -35,10 +35,14 @@ public class HomeController {
     @GetMapping(value = "selectword.ajax")
     public HashMap<String,Object> selectWord(String word){
         HashMap<String,Object> hashMap=new HashMap<>();
+        List<String> myKeyword=searchService.myKeyword(word);
+        HashMap<String,Object> selectSearchMap=new HashMap<>();
+        selectSearchMap.put("myKeyword",myKeyword);
+        selectSearchMap.put("word",word);
         // 로그 찍어
         logger.info("############################" + word);
-        List<String> selectSearchlist=searchService.selectSearch(word);
-        List<String> myKeyword=searchService.myKeyword();
+        List<String> selectSearchlist=searchService.selectSearch(selectSearchMap);
+
         for(String a : selectSearchlist){
             logger.info(a);
         }

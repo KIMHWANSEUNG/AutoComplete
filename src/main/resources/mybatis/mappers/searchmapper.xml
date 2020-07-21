@@ -2,7 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.study.homework.Repository.mapper.SearchMapper">
     <insert id="insertSearch">
-            insert into HW_SEARCH_HISTORY(KEYWORD,WRITER,REG_DATE) values(#{keyword},#{writer},sysdate)
+            insert into
+                HW_SEARCH_HISTORY(KEYWORD,WRITER,REG_DATE)
+            values
+                (#{keyword},#{writer},sysdate)
     </insert>
 
     <select id="selectSearch" resultType="String">
@@ -27,11 +30,24 @@
     </select>
 
     <select id="selectList" resultType="com.study.homework.Repository.VO.BoardVo">
-        select HOTEL_NM, HOTEL_ADRES from TF_HOTEL_TA  where HOTEL_NM like '%'|| #{keyword}||'%'
+        select
+            HOTEL_NM,
+            HOTEL_ADRES
+        from
+            TF_HOTEL_TA
+        where
+            HOTEL_NM
+        like
+            '%'|| #{keyword}||'%'
     </select>
 
     <select id="confirmKeyword" resultType="Integer">
-        select count(*) from HW_SEARCH_HISTORY where KEYWORD = #{keyword}
+        select
+            count(*)
+        from
+            HW_SEARCH_HISTORY
+        where
+            KEYWORD = #{keyword}
     </select>
 
     <select id="myKeyword" resultType="String">

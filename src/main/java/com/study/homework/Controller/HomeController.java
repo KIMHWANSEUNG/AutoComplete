@@ -71,4 +71,9 @@ public class HomeController {
 
         return selectList;
     }
+
+    @RequestMapping(value="facebook")
+    public String facebook(){
+        return"facebook";
+    }
 }

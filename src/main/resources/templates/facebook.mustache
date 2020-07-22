@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>자동 완성</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 이게 없으면 한글 검색 x -->
+    <meta charset="utf-8">
+    <!-- jQuery ui style sheet -->
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <!-- jQuery library -->
+    <script src="https://code.jquery.com/jquery.js"></script>
+    <!-- jQuery ui library -->
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <!--FACEBOOK SDK 불러오는 구문 !!-->
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
+
+
+</head>
+<body>
+<script type="text/javascript">
+    (function(d, s, id){
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {return;}
+        js = d.createElement(s);
+        js.id = id;
+        js.src = "//connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+
+    window.fbAsyncInit = function() {
+        FB.init({
+            appId      : '720296648755291',
+            cookie     : true,
+            xfbml      : true,
+            version    : 'v7.0'
+        });
+    };
+
+    //로그인 여부 확인
+    function checkLoginState() {
+        FB.getLoginStatus(function(response) {
+            statusChangeCallback(response);
+        });
+    }
+
+    function  statusChangeCallback(response) {
+        if(response.status === 'connected'){
+            console.log('사용자가 FaceBook에 로그인하고 앱에 로그인했습니다.')
+            console.log(response);
+            FB.api('/me',function (response) {
+                console.log('Successful login for : '+ response.name);
+            });
+        }else if(response.status === 'not_authorized'){
+            console.log('사용자가 Facebook에 로그인했지만 앱에 로그인하지 않았습니다.');
+        }else{
+            console.log('사용자가 FaceBook에 로그인하지 않았으므로 앱에 로그인했는지 알 수 없습니다.')
+        }
+    }
+
+    function posting() {
+        FB.api(
+            '/me/feed','post',{"message" : "안녕하세요?"},
+                function (response) {
+                console.log('facebook-response :',response)
+                 if(response && !response.error){
+                     alert("포스팅 성공!");
+                 }else {
+                     console.log("포스팅 실패 !");
+                 }
+                }
+        );
+    }
+
+</script>
+<style>
+    .div_total{
+        display: flex;
+        flex-direction: column;
+        min-height:300px;
+        width:100%;
+        align-items:center;
+        text-align: center;
+    }
+    .div_search{
+        display: flex;
+        flex-direction: row;
+    }
+</style>
+<div class="div_total">
+    <h2>페이스북 피드 등록하기</h2>
+    <h5><a href="/">자동완성 등록하러 가기</a></h5>
+    <div class="">
+        <fb:login-button scope="public_profile,email,user_posts" onlogin="checkLoginState();">로그인</fb:login-button>
+    </div>
+    <div>
+        <button id="postion" onclick="posting()">포스팅</button>
+    </div>
+</div>
+
+
+
+
+</body>
+</html>

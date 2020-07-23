@@ -19,6 +19,15 @@
 </head>
 <body>
 <script type="text/javascript">
+    window.fbAsyncInit = function() {
+        FB.init({
+            appId      : '720296648755291',
+            cookie     : true,
+            xfbml      : true,
+            version    : 'v7.0'
+        });
+    };
+
     (function(d, s, id){
         var js, fjs = d.getElementsByTagName(s)[0];
         if (d.getElementById(id)) {return;}
@@ -28,14 +37,7 @@
         fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'facebook-jssdk'));
 
-    window.fbAsyncInit = function() {
-        FB.init({
-            appId      : '720296648755291',
-            cookie     : true,
-            xfbml      : true,
-            version    : 'v7.0'
-        });
-    };
+
 
     //로그인 여부 확인
     function checkLoginState() {
@@ -46,8 +48,7 @@
 
     function  statusChangeCallback(response) {
         if(response.status === 'connected'){
-            console.log('사용자가 FaceBook에 로그인하고 앱에 로그인했습니다.')
-            console.log(response);
+
             FB.api('/me',function (response) {
                 console.log('Successful login for : '+ response.name);
             });
@@ -58,9 +59,40 @@
         }
     }
 
+    //글 가져오기
+    function reading() {
+
+
+        FB.api(
+                '/me',
+                'GET',
+                {"fields":"id,name,posts"},
+                function(response) {
+                    if(response && !response.error){
+                        alert("가져오기 성공! ");
+                        console.log(response);
+                        $("#list").empty();
+                        $.each(response.posts.data, function (index, item) {
+                            const time=item.created_time
+                            let date_1=new Date(time);
+
+
+                            $("#list").append(
+                                    "<span> 게시글 내용 </span> : "+item.message+"<br/>"+
+                                    "<span>등록 시간 </span> : " + time+"<br/>"
+                            )
+                        })
+                    }else{
+                        console.log("가져오기 실패")
+                    }
+                }
+        );
+
+    }
+    //글 등록하기
     function posting() {
         FB.api(
-            '/me/feed','post',{"message" : "안녕하세요?"},
+            '/109127364217881/feed','POST',{"message" : "안녕하세요?"},
                 function (response) {
                 console.log('facebook-response :',response)
                  if(response && !response.error){
@@ -73,6 +105,8 @@
     }
 
 </script>
+
+
 <style>
     .div_total{
         display: flex;
@@ -92,11 +126,61 @@
     <h5><a href="/">자동완성 등록하러 가기</a></h5>
     <div class="">
         <fb:login-button scope="public_profile,email,user_posts" onlogin="checkLoginState();">로그인</fb:login-button>
+
     </div>
     <div>
-        <button id="postion" onclick="posting()">포스팅</button>
+        <button id="postion" onclick="posting();">글 등록하기</button>
+        <button id="reading" onclick="reading();">글 가져오기</button>
+    </div>
+
+    <div id="list">
+
     </div>
 </div>
+
+<!--
+ 페이스북 Graph api 로 내 게시물 가져오기
+<script>
+    var fb_api_html = "";
+    window.fbAsyncInit = function() {
+        FB.init({
+            appId            : '720296648755291', // 처음 앱 생성시 받았던 앱 ID
+            autoLogAppEvents : true,
+            xfbml            : true,
+            version          : 'v7.0' // 그래프 API 탐색기 페이지의 버전과 맞추면 됨. 190904 기준 v4.0
+        });
+
+        FB.api('/1233342643712874/feed?fields=attachments,message,picture,link,name,caption,description,source', {
+            access_token : '720296648755291|K9Hhcfiwt1TAgQScHJI-Mko6vX8'
+        }, function(response){
+            for (var i=0; i<response.data.length; i++) {
+
+                fb_api_html += "<div class='myfb_message'>" + response.data[i]['message'];
+
+                if (response.data[i]['picture']) {
+                    fb_api_html += "<img src='" + response.data[i]['picture'] + "' />";
+                }
+
+                fb_api_html += "</div>";
+            }
+
+            $("#fbfeed").html(fb_api_html);
+        });
+    };
+
+    (function(d, s, id){
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {return;}
+        js = d.createElement(s); js.id = id;
+        js.src = "https://connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+</script>
+
+<div id="fbfeed"></div>
+-->
+
+
 
 
 

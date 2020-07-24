@@ -19,8 +19,6 @@
 <body>
 <script type="text/javascript">
 
-
-
     $(document).ready(function () {
 
         $("#btn_search").click(function () {
@@ -69,15 +67,14 @@
                     url:"selectword.ajax",
                     data: {"word" : word},
                     success:function (data) {
-                        let list1= data.selectSearchlist;
-                        let list2= data.myKeyword;
-                        let list3= Object.assign(list1,list2);
+                        console.log(data);
                         response(
-                                $.map(list3, function(item, index) {
+                                $.map(data, function(item, index) {
                                     return {
-                                        label: item,
-                                        value: item,
-                                        number:index
+                                        label: index,
+                                        value: index,
+                                        keyword:item
+
                                     };
                                 })
                           )
@@ -86,12 +83,12 @@
             },
             create:function () {
                 $(this).data("ui-autocomplete")._renderItem=function (ul,item) {
-                    if(item.number<3){
+                    if(item.keyword=="mysearch"){
                         return $("<li>")
                                 .data("ui-autocomplete-item", item)
                                 .append("<a>" + "<strong>" + "[최근 검색]" + item.label + "</strong>" + "</a>")
                                 .appendTo(ul);
-                    }else{
+                    }else if(item.keyword=="totalsearch"){
                         return $("<li>")
                                 .data("ui-autocomplete-item", item)
                                 .append("<a>" + "<strong>" +  item.label + "</strong>" + "</a>")

@@ -15,8 +15,9 @@
             HW_SEARCH_HISTORY
         where
     1=1
-            <if test='minusKeyword != null'>
-                KEYWORD
+            <if test="myKeyword != null and myKeyword.size != 0">
+                and
+                   KEYWORD
                 not in
                 <foreach collection="myKeyword" item="minusKeyword" open="(" close=")" separator=",">
                     #{minusKeyword}
